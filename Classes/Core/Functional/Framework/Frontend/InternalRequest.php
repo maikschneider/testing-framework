@@ -180,4 +180,15 @@ class InternalRequest extends Request
         $parameters[$parameterName] = $value;
         return \GuzzleHttp\Psr7\Query::build($parameters);
     }
+
+    /**
+     * return array|null
+     */
+    public function getParsedBody() {
+        if ($this->getBody() && (string)$this->getBody()) {
+            parse_str((string)$this->getBody(), $parsedBody);
+            return is_array($parsedBody) ? $parsedBody : null;
+        }
+        return null;
+    }
 }

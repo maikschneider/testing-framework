@@ -1062,10 +1062,13 @@ abstract class FunctionalTestCase extends BaseTestCase implements ContainerInter
         $serverRequest = new ServerRequest(
             $uri,
             $request->getMethod(),
-            'php://input',
+            $request->getBody(),
             $request->getHeaders(),
             $serverParams
         );
+        if ($parsedBody = $request->getParsedBody()) {
+            $serverRequest = $serverRequest->withParsedBody($parsedBody);
+        }
         $serverRequest = $serverRequest->withAttribute('typo3.testing.context', $context);
         $requestUrlParts = [];
         parse_str($uri->getQuery(), $requestUrlParts);
